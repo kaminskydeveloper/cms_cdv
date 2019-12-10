@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const Nav = styled.nav`
   background-color: #8b83c5;
@@ -12,7 +13,7 @@ const Nav = styled.nav`
     align-items: center;
     margin: 0;
 
-    li {
+    a {
       color: #fff;
       padding: 0 1.5rem;
     }
@@ -30,12 +31,12 @@ export default function Navbar() {
     <Nav>
       <ul>
         <div>
-          <li>CDV CMS</li>
+          <Link to="/">CDV CMS</Link>
         </div>
         <div>
-          <li>Home</li>
-          <li>About</li>
-          <li>Contact</li>
+          <Link to="/">Home</Link>
+          <Link to="/about">About</Link>
+          <Link to="/contact">Contact</Link>
         </div>
       </ul>
     </Nav>
