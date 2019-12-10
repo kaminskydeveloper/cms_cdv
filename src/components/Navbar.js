@@ -13,9 +13,30 @@ const Nav = styled.nav`
     align-items: center;
     margin: 0;
 
-    a {
-      color: #fff;
-      padding: 0 1.5rem;
+    .logoLink {
+      font-weight: 600;
+    }
+
+    .hoverDiv {
+      li {
+        &:hover {
+          background-color: #c3bbff;
+          cursor: pointer;
+          transition: background-color 0.3s ease-in;
+        }
+      }
+    }
+
+    li {
+      height: 70px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+
+      a {
+        color: #fff;
+        padding: 0 1.5rem;
+      }
     }
 
     div {
@@ -31,12 +52,23 @@ export default function Navbar() {
     <Nav>
       <ul>
         <div>
-          <Link to="/">CDV CMS</Link>
+          <li>
+            <Link to="/" className="logoLink">
+              CDV CMS
+            </Link>
+          </li>
         </div>
-        <div>
-          <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-          <Link to="/contact">Contact</Link>
+        <div className="hoverDiv">
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/about">About</Link>
+          </li>
+          <li>
+            {' '}
+            <Link to="/contact">Contact</Link>
+          </li>
         </div>
       </ul>
     </Nav>
