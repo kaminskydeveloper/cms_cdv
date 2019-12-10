@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import * as StyleConstants from '../styles/StyleConstants';
 
 const Nav = styled.nav`
-  background-color: #8b83c5;
+  background-color: ${StyleConstants.MAIN_COLOR};
   height: 70px;
 
   ul {
@@ -20,7 +21,7 @@ const Nav = styled.nav`
     .hoverDiv {
       li {
         &:hover {
-          background-color: #c3bbff;
+          background-color: ${StyleConstants.MAIN_COLOR_LIGHTER};
           cursor: pointer;
           transition: background-color 0.3s ease-in;
         }

@@ -12,6 +12,8 @@ const Button = styled.button`
 
   &:hover {
     cursor: pointer;
+    background-color: ${StyleConstants.MAIN_COLOR_LIGHTER};
+    transition: background-color 0.4s ease-in;
   }
 `;
 
