@@ -5,6 +5,11 @@ import home from './pages/home';
 import about from './pages/about';
 import contact from './pages/contact';
 import login from './pages/login';
+import dashboard from './pages/dashboard';
+import articles from './pages/articles';
+import users from './pages/users';
+import article from './pages/article';
+import addArticle from './pages/addArticle';
 
 class App extends Component {
   render() {
@@ -15,6 +20,11 @@ class App extends Component {
           <Route exact path="/about" component={about}></Route>
           <Route exact path="/contact" component={contact}></Route>
           <Route exact path="/login" component={login}></Route>
+          <Route exact path="/dashboard" component={dashboard}></Route>
+          <Route exact path="/articles" component={articles}></Route>
+          <Route exact path="/users" component={users}></Route>
+          <Route exact path="/article/:id" component={article}></Route>
+          <Route exact path="/addarticle" component={addArticle}></Route>
         </Switch>
       </Router>
     );

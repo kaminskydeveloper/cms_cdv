@@ -33,16 +33,11 @@ class home extends Component {
 
   componentDidMount = () => {
     this.setState({ loading: true });
-    fetch(
-      `https://newsapi.org/v2/everything?q=technology&apiKey=${process.env.REACT_APP_API_KEY}`
-    )
+
+    fetch(`https://europe-west1-cdv-cms.cloudfunctions.net/api/posts`)
       .then(res => res.json())
       .then(json => {
-        this.setState({
-          fetchedPosts: json.articles,
-          posts: json.articles,
-          loading: false,
-        });
+        this.setState({ posts: json, loading: false });
         console.log(this.state.posts);
       });
   };
@@ -71,11 +66,12 @@ class home extends Component {
   render() {
     let CardContainerContent = this.state.posts.map(post => (
       <PostCard
-        key={post.url}
+        key={post.postId}
         title={post.title}
-        author={post.author}
-        description={post.description}
-        imageUrl={post.urlToImage ? post.urlToImage : ''}
+        author={post.userHandle}
+        description={post.body}
+        imageUrl={post.postImage ? post.postImage : ''}
+        postId={post.postId}
       />
     ));
 
