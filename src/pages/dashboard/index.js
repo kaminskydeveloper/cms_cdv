@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import DashboardLayout from '../components/DashboardLayout';
+import DashboardLayout from '../../components/DashboardLayout';
 import styled from 'styled-components';
-import * as StyleConstants from '../styles/StyleConstants';
-import TrashImage from '../images/icons/trash.svg';
-import SingleDraft from '../components/SingleDraft';
+import * as StyleConstants from '../../styles/StyleConstants';
+import SingleDraft from '../../components/SingleDraft';
 
 const ContentWrapper = styled.div`
   padding: 1rem;

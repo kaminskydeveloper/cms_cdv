@@ -46,7 +46,7 @@ export default function DashboardNavbar() {
     <Nav>
       <ul className="logo">
         <li>
-          <Link to="/dashboard">cdv CMS</Link>
+          <Link to="/">cdv CMS</Link>
         </li>
       </ul>
       <ul>
@@ -54,7 +54,7 @@ export default function DashboardNavbar() {
           <Link to="/dashboard">Dashboard</Link>
         </li>
         <li>
-          <Link to="/articles">Articles</Link>
+          <Link to="/dashboard/articles">Articles</Link>
         </li>
         <li>
           <Link to="/users">Users</Link>

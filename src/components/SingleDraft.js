@@ -30,7 +30,7 @@ export default function SingleDraft({ children }, props) {
       <DraftContentWrapper>
         {children}
         <div className="trash-container">
-          <img src={TrashImage} onClick={props.deleteSingleDraft} />
+          <img src={TrashImage} alt="trash" onClick={props.deleteSingleDraft} />
         </div>
       </DraftContentWrapper>
     </DraftWrapper>

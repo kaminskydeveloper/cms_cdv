@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
-import DashboardLayout from '../components/DashboardLayout';
+import DashboardLayout from '../../components/DashboardLayout';
 import styled from 'styled-components';
-import * as StyleConstants from '../styles/StyleConstants';
+import * as StyleConstants from '../../styles/StyleConstants';
+import { Link } from 'react-router-dom';
+import Button from '../../components/CustomButton';
 
 const ContentWrapper = styled.div`
   color: ${StyleConstants.MAIN_TEXT};
-  padding: 3rem;
+  padding: 3rem 10rem;
+  display: grid;
 
   h2 {
     margin-bottom: 3rem;
+  }
+
+  .add-button {
+    justify-self: end;
   }
 `;
 
@@ -16,7 +23,7 @@ const SingleArticle = styled.div`
   display: grid;
   grid-template-columns: 3fr 1fr 1fr 1fr 1fr;
   padding: 2rem;
-  margin: 1rem 0;
+  margin: 1rem auto;
   background-color: ${StyleConstants.PURPLE_LIGHT};
   border-radius: 5px;
 
@@ -106,6 +113,9 @@ class articles extends Component {
         <ContentWrapper>
           <h2>Articles</h2>
           <div>{CardContainerContent}</div>
+          <Link to="/dashboard/addarticle" className="add-button">
+            <Button>Add new</Button>
+          </Link>
         </ContentWrapper>
       </DashboardLayout>
     );

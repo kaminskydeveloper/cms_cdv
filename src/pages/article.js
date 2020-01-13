@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import Layout from '../components/Layout';
 import styled from 'styled-components';
-import dayjs from 'dayjs';
+import CalendarIcon from '../images/icons/calendar.svg';
+import AuthorIcon from '../images/icons/author.svg';
 
 const ContentWrapper = styled.div`
   display: grid;
   justify-content: center;
-  padding: 2rem;
+  padding: 4rem 0 10rem 0;
 
   .article-wrapper {
     max-width: 600px;
@@ -25,9 +26,18 @@ const ContentWrapper = styled.div`
       margin-top: 1rem;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
+      align-items: center;
 
       span {
         font-size: 0.6rem;
+        display: grid;
+        grid-template-columns: 20px 1fr;
+        align-items: center;
+
+        .info-icon {
+          padding: 0;
+          height: 15px;
+        }
       }
     }
   }
@@ -61,9 +71,21 @@ export default class Article extends Component {
                 <h3>{this.state.posts[0].title}</h3>
                 <div className="create-info">
                   <span>
+                    <img
+                      src={CalendarIcon}
+                      alt="calendar icon"
+                      className="info-icon"
+                    />
                     Created at: {this.state.posts[0].createdAt.substring(0, 10)}
                   </span>
-                  <span>Author: {this.state.posts[0].userHandle}</span>
+                  <span>
+                    <img
+                      src={AuthorIcon}
+                      alt="author icon"
+                      className="info-icon"
+                    />
+                    Author: {this.state.posts[0].userHandle}
+                  </span>
                 </div>
                 <img src={this.state.posts[0].postImage} alt="" />
                 <p>{this.state.posts[0].body}</p>

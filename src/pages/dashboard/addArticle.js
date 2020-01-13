@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import DashboardLayout from '../components/DashboardLayout';
+import DashboardLayout from '../../components/DashboardLayout';
 import styled from 'styled-components';
-import * as StyleConstants from '../styles/StyleConstants';
-import Button from '../components/CustomButton';
+import * as StyleConstants from '../../styles/StyleConstants';
+import Button from '../../components/CustomButton';
 
 const ContentWrapper = styled.div`
   color: ${StyleConstants.MAIN_TEXT};
