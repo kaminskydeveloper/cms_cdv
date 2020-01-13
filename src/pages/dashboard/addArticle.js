@@ -3,6 +3,7 @@ import DashboardLayout from '../../components/DashboardLayout';
 import styled from 'styled-components';
 import * as StyleConstants from '../../styles/StyleConstants';
 import Button from '../../components/CustomButton';
+import axios from 'axios';
 
 const ContentWrapper = styled.div`
   color: ${StyleConstants.MAIN_TEXT};
@@ -42,6 +43,11 @@ const Form = styled.form`
   p {
     margin: 1rem 0;
   }
+
+  .add-success-paragraph {
+    color: green;
+    font-weight: 600;
+  }
 `;
 
 class addArticle extends Component {
@@ -50,6 +56,7 @@ class addArticle extends Component {
     content: '',
     imageUrl: '',
     userHandle: '',
+    addSuccess: false,
   };
 
   handleChange = e => {
@@ -62,16 +69,42 @@ class addArticle extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    fetch('https://europe-west1-cdv-cms.cloudfunctions.net/api/post', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: {
+    // fetch('https://europe-west1-cdv-cms.cloudfunctions.net/api/post', {
+    //   method: 'post',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: {
+    //     title: this.state.title,
+    //     body: this.state.content,
+    //     userHandle: this.state.userHandle,
+    //     postImage: this.state.imageUrl,
+    //   },
+    // }).catch(err => console.log(err));
+
+    axios
+      .post('https://europe-west1-cdv-cms.cloudfunctions.net/api/post', {
         title: this.state.title,
         body: this.state.content,
         userHandle: this.state.userHandle,
         postImage: this.state.imageUrl,
-      },
-    });
+      })
+      .then(res => {
+        console.log(res);
+        this.setState({
+          title: '',
+          content: '',
+          imageUrl: '',
+          userHandle: '',
+          addSuccess: true,
+        });
+        setTimeout(() => {
+          this.setState({ addSuccess: false });
+        }, 3000);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   };
   render() {
     return (
@@ -83,15 +116,15 @@ class addArticle extends Component {
             <input
               type="text"
               name="title"
-              id=""
               onChange={this.handleChange}
+              value={this.state.title}
             />
             <p>Content</p>
             <textarea
               name="content"
-              id=""
               rows="17"
               onChange={this.handleChange}
+              value={this.state.content}
             />
             {/* <div className="category-container">
               <select>
@@ -109,18 +142,29 @@ class addArticle extends Component {
               <input
                 type="text"
                 name="imageUrl"
-                id=""
                 placeholder="image url"
                 onChange={this.handleChange}
+                value={this.state.imageUrl}
               />
               <input
                 type="text"
                 name="userHandle"
-                id=""
                 placeholder="user handle"
                 onChange={this.handleChange}
+                value={this.state.userHandle}
               />
+              {/* <input
+                type="file"
+                name="userImage"
+                placeholder="user handle"
+                onChange={this.handleChange}
+              /> */}
               <Button>ADD ARTICLE</Button>
+              {this.state.addSuccess && (
+                <p className="add-success-paragraph">
+                  Article added successfully
+                </p>
+              )}
             </div>
           </Form>
         </ContentWrapper>

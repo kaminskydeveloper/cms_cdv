@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import * as StyleConstants from '../../styles/StyleConstants';
 import { Link } from 'react-router-dom';
 import Button from '../../components/CustomButton';
+import axios from 'axios';
 
 const ContentWrapper = styled.div`
   color: ${StyleConstants.MAIN_TEXT};
@@ -71,6 +72,7 @@ class articles extends Component {
   state = {
     posts: [],
     loading: true,
+    deleteSuccess: false,
   };
 
   componentDidMount = () => {
@@ -81,7 +83,31 @@ class articles extends Component {
       .then(json => {
         this.setState({ posts: json, loading: false });
         console.log(this.state.posts);
+        console.log(this.state.posts[0].postId);
       });
+  };
+
+  deleteSinglePost = postId => {
+    axios
+      .delete(
+        `https://europe-west1-cdv-cms.cloudfunctions.net/api/post/${postId}`
+      )
+      .then(res => {
+        const refreshedPosts = this.state.posts.filter(
+          post => post.postId !== postId
+        );
+        this.setState({ posts: refreshedPosts });
+      })
+      .catch(err => console.log(err));
+  };
+
+  editSinglePost = postId => {
+    console.log(postId);
+    const refreshedPosts = this.state.posts.filter(
+      post => post.postId !== postId
+    );
+
+    console.log(refreshedPosts);
   };
 
   render() {
@@ -100,10 +126,20 @@ class articles extends Component {
           <p>{post.userHandle}</p>
         </div>
         <div className="edit-container">
-          <button className="edit-button">EDIT</button>
+          <button
+            className="edit-button"
+            onClick={() => this.editSinglePost(post.postId)}
+          >
+            EDIT
+          </button>
         </div>
         <div className="delete-container">
-          <button className="delete-button">DELETE</button>
+          <button
+            className="delete-button"
+            onClick={() => this.deleteSinglePost(post.postId)}
+          >
+            DELETE
+          </button>
         </div>
       </SingleArticle>
     ));
