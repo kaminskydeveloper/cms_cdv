@@ -36,13 +36,17 @@ const DraftWrapper = styled.div`
   }
 `;
 
-export default function SingleDraft({ children }, props) {
+export default function SingleDraft({ children, deleteSingleDraft, draftId }) {
   return (
     <DraftWrapper>
       <DraftContentWrapper>
         <div className="children-container">{children}</div>
         <div className="trash-container">
-          <img src={TrashImage} alt="trash" onClick={props.deleteSingleDraft} />
+          <img
+            src={TrashImage}
+            alt="trash"
+            onClick={() => deleteSingleDraft(draftId)}
+          />
         </div>
       </DraftContentWrapper>
     </DraftWrapper>

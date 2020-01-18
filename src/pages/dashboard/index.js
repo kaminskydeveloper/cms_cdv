@@ -120,10 +120,18 @@ class dashboard extends Component {
     }
   };
 
-  deleteSingleDraft = draft => {
-    const data = this.state.drafts.filter(i => i.id !== draft.id);
-    this.setState({ drafts: data });
-    alert('hi');
+  deleteSingleDraft = draftId => {
+    axios
+      .delete(
+        `https://europe-west1-cdv-cms.cloudfunctions.net/api/deleteDraft/${draftId}`
+      )
+      .then(res => {
+        const refreshedDrafts = this.state.drafts.filter(
+          draft => draft.draftId !== draftId
+        );
+        this.setState({ drafts: refreshedDrafts });
+      })
+      .catch(err => console.log(err));
   };
 
   render() {
@@ -131,6 +139,7 @@ class dashboard extends Component {
       <SingleDraft
         deleteSingleDraft={this.deleteSingleDraft}
         key={draft.draftId}
+        draftId={draft.draftId}
       >
         <h4>{draft.title}</h4>
         <p>{draft.body}</p>
