@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import * as StyleConstants from '../../styles/StyleConstants';
 import { Link } from 'react-router-dom';
 import Button from '../../components/CustomButton';
+import LoadingSpinner from '../../images/LoadingSpinner.svg';
 import axios from 'axios';
 
 const ContentWrapper = styled.div`
@@ -126,12 +127,9 @@ class articles extends Component {
           <p>{post.userHandle}</p>
         </div>
         <div className="edit-container">
-          <button
-            className="edit-button"
-            onClick={() => this.editSinglePost(post.postId)}
-          >
-            EDIT
-          </button>
+          <Link to={`/dashboard/editPost/${post.postId}`}>
+            <button className="edit-button">EDIT</button>
+          </Link>
         </div>
         <div className="delete-container">
           <button
@@ -148,7 +146,13 @@ class articles extends Component {
       <DashboardLayout>
         <ContentWrapper>
           <h2>Articles</h2>
-          <div>{CardContainerContent}</div>
+          <div>
+            {this.state.loading ? (
+              <img src={LoadingSpinner} alt="loading spinner" />
+            ) : (
+              CardContainerContent
+            )}
+          </div>
           <Link to="/dashboard/addarticle" className="add-button">
             <Button>Add new</Button>
           </Link>

@@ -10,6 +10,7 @@ import articles from './pages/dashboard/articles';
 import users from './pages/users';
 import article from './pages/article';
 import addArticle from './pages/dashboard/addArticle';
+import editPost from './pages/dashboard/editPost';
 
 class App extends Component {
   render() {
@@ -28,6 +29,11 @@ class App extends Component {
             exact
             path="/dashboard/addarticle"
             component={addArticle}
+          ></Route>
+          <Route
+            exact
+            path="/dashboard/editPost/:id"
+            component={editPost}
           ></Route>
         </Switch>
       </Router>

@@ -3,6 +3,7 @@ import Button from '../components/CustomButton';
 import styled from 'styled-components';
 import PostCard from '../components/PostCard';
 import Layout from '../components/Layout';
+import LoadingSpinner from '../images/LoadingSpinner.svg';
 
 const ContentWrapper = styled.div`
   padding: 1rem;
@@ -87,7 +88,9 @@ class home extends Component {
             <Button onClick={this.getAllPosts}>All</Button>
           </div>
           {this.state.loading ? (
-            <h1>Loading...</h1>
+            <h1>
+              <img src={LoadingSpinner} alt="loading spinner" />
+            </h1>
           ) : (
             <CardContainer>{CardContainerContent}</CardContainer>
           )}

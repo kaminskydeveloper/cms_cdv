@@ -50,13 +50,31 @@ const Form = styled.form`
   }
 `;
 
-class addArticle extends Component {
+class editPost extends Component {
   state = {
     title: '',
     content: '',
     imageUrl: '',
     userHandle: '',
     addSuccess: false,
+  };
+
+  componentDidMount = () => {
+    axios
+      .get(`https://europe-west1-cdv-cms.cloudfunctions.net/api/posts`)
+      .then(res => {
+        const data = res.data.filter(
+          post => post.postId === this.props.match.params.id
+        );
+
+        this.setState({
+          title: data[0].title,
+          content: data[0].body,
+          imageUrl: data[0].postImage,
+          userHandle: data[0].userHandle,
+        });
+      })
+      .catch(err => console.log(err));
   };
 
   handleChange = e => {
@@ -71,21 +89,17 @@ class addArticle extends Component {
     e.preventDefault();
 
     axios
-      .post('https://europe-west1-cdv-cms.cloudfunctions.net/api/post', {
-        title: this.state.title,
-        body: this.state.content,
-        userHandle: this.state.userHandle,
-        postImage: this.state.imageUrl,
-      })
+      .put(
+        `https://europe-west1-cdv-cms.cloudfunctions.net/api/post/${this.props.match.params.id}`,
+        {
+          title: this.state.title,
+          body: this.state.content,
+          userHandle: this.state.userHandle,
+          postImage: this.state.imageUrl,
+        }
+      )
       .then(res => {
-        console.log(res);
-        this.setState({
-          title: '',
-          content: '',
-          imageUrl: '',
-          userHandle: '',
-          addSuccess: true,
-        });
+        this.setState({ addSuccess: true });
         setTimeout(() => {
           this.setState({ addSuccess: false });
         }, 3000);
@@ -150,7 +164,7 @@ class addArticle extends Component {
               <Button>ADD ARTICLE</Button>
               {this.state.addSuccess && (
                 <p className="add-success-paragraph">
-                  Article added successfully
+                  Article edited successfully
                 </p>
               )}
             </div>
@@ -161,4 +175,4 @@ class addArticle extends Component {
   }
 }
 
-export default addArticle;
+export default editPost;

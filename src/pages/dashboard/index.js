@@ -3,6 +3,8 @@ import DashboardLayout from '../../components/DashboardLayout';
 import styled from 'styled-components';
 import * as StyleConstants from '../../styles/StyleConstants';
 import SingleDraft from '../../components/SingleDraft';
+import LoadingSpinner from '../../images/LoadingSpinner.svg';
+import axios from 'axios';
 
 const ContentWrapper = styled.div`
   padding: 1rem;
@@ -24,6 +26,7 @@ const ContentWrapper = styled.div`
     display: grid;
     align-items: start;
     margin-top: 3rem;
+    max-height: 100vh;
   }
 
   .second-column {
@@ -69,26 +72,16 @@ class dashboard extends Component {
   state = {
     formDraftTitle: '',
     formDraftNote: '',
-    drafts: [
-      {
-        id: 1,
-        title: 'Title',
-        body:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...',
-      },
-      {
-        id: 2,
-        title: 'Title',
-        body:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...',
-      },
-      {
-        id: 3,
-        title: 'Title',
-        body:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...',
-      },
-    ],
+    drafts: [],
+    loading: true,
+  };
+
+  componentDidMount = () => {
+    axios
+      .get('https://europe-west1-cdv-cms.cloudfunctions.net/api/Drafts')
+      .then(res => {
+        this.setState({ drafts: res.data, loading: false });
+      });
   };
 
   handleChange = e => {
@@ -102,14 +95,26 @@ class dashboard extends Component {
   handleSubmit = e => {
     e.preventDefault();
     if (this.state.formDraftTitle && this.state.formDraftNote) {
-      this.setState({
-        drafts: [
-          ...this.state.drafts,
-          { title: this.state.formDraftTitle, body: this.state.formDraftNote },
-        ],
-      });
-
-      this.setState({ formDraftTitle: '', formDraftNote: '' });
+      axios
+        .post('https://europe-west1-cdv-cms.cloudfunctions.net/api/postDraft', {
+          title: this.state.formDraftTitle,
+          body: this.state.formDraftNote,
+          userHandle: 'pies',
+        })
+        .then(res => {
+          this.setState({
+            drafts: [
+              {
+                title: this.state.formDraftTitle,
+                body: this.state.formDraftNote,
+                draftId: res.data.draftId,
+              },
+              ...this.state.drafts,
+            ],
+          });
+          this.setState({ formDraftTitle: '', formDraftNote: '' });
+        })
+        .catch(err => console.log(err));
     } else {
       alert('Cannot be empty');
     }
@@ -123,7 +128,10 @@ class dashboard extends Component {
 
   render() {
     let drafts = this.state.drafts.map(draft => (
-      <SingleDraft deleteSingleDraft={this.deleteSingleDraft} key={draft.id}>
+      <SingleDraft
+        deleteSingleDraft={this.deleteSingleDraft}
+        key={draft.draftId}
+      >
         <h4>{draft.title}</h4>
         <p>{draft.body}</p>
       </SingleDraft>
@@ -164,7 +172,11 @@ class dashboard extends Component {
           </div>
           <div className="second-column">
             <h2>Drafts</h2>
-            {drafts}
+            {this.state.loading ? (
+              <img src={LoadingSpinner} alt="loading spinner" />
+            ) : (
+              drafts
+            )}
           </div>
         </ContentWrapper>
       </DashboardLayout>
