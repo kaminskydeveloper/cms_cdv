@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import * as StyleConstants from '../styles/StyleConstants';
 import Button from '../components/CustomButton';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const LoginWrapper = styled.div`
   height: 100vh;
@@ -41,25 +42,70 @@ const LoginWrapper = styled.div`
     }
   }
 `;
+class login extends Component {
+  state = {
+    email: '',
+    password: '',
+  };
 
-export default function login() {
-  return (
-    <LoginWrapper>
-      <h3>Zaloguj się do CDV CMS</h3>
-      <form>
-        <div className="inputWrapper">
-          <input type="text" name="login" placeholder="Podaj login..." />
-        </div>
-        <div className="inputWrapper">
-          <input type="password" name="login" placeholder="Podaj hasło..." />
-        </div>
+  loginUser = e => {
+    e.preventDefault();
 
-        <Button>Zaloguj</Button>
-      </form>
+    axios
+      .post('https://europe-west1-cdv-cms.cloudfunctions.net/api/login', {
+        email: this.state.email,
+        password: this.state.password,
+      })
+      .then(res => {
+        const FBIdToken = `Bearer ${res.data.token}`;
+        localStorage.setItem('FBIdToken', `Bearer ${res.data.token}`);
+        axios.defaults.headers.common['Authorization'] = FBIdToken;
+        this.props.history.push('/dashboard');
+      })
+      .catch(err => alert('wrong credentials!'));
+  };
 
-      <p className="bottomParagraph">
-        lub przejdź do <Link to="/">strony głównej</Link>.
-      </p>
-    </LoginWrapper>
-  );
+  handleChange = e => {
+    const name = e.target.name;
+    const value = e.target.value;
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  render() {
+    return (
+      <LoginWrapper>
+        <h3>Zaloguj się do CDV CMS</h3>
+        <form onSubmit={this.loginUser}>
+          <div className="inputWrapper">
+            <input
+              type="text"
+              name="email"
+              placeholder="Podaj email..."
+              value={this.state.email}
+              onChange={this.handleChange}
+            />
+          </div>
+          <div className="inputWrapper">
+            <input
+              type="password"
+              name="password"
+              placeholder="Podaj hasło..."
+              value={this.state.password}
+              onChange={this.handleChange}
+            />
+          </div>
+
+          <Button>Zaloguj</Button>
+        </form>
+
+        <p className="bottomParagraph">
+          lub przejdź do <Link to="/">strony głównej</Link>.
+        </p>
+      </LoginWrapper>
+    );
+  }
 }
+
+export default login;

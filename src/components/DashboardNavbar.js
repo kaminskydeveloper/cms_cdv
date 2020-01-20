@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import * as StyleConstants from '../styles/StyleConstants';
@@ -41,28 +41,36 @@ const Nav = styled.nav`
   }
 `;
 
-export default function DashboardNavbar() {
-  return (
-    <Nav>
-      <ul className="logo">
-        <li>
-          <Link to="/">cdv CMS</Link>
-        </li>
-      </ul>
-      <ul>
-        <li>
-          <Link to="/dashboard">Dashboard</Link>
-        </li>
-        <li>
-          <Link to="/dashboard/articles">Articles</Link>
-        </li>
-        <li>
-          <Link to="/users">Users</Link>
-        </li>
-      </ul>
-      <ul className="logout">
-        <li>Logout</li>
-      </ul>
-    </Nav>
-  );
+export default class DashboardNavbar extends Component {
+  logoutUser = () => {
+    localStorage.removeItem('FBIdToken');
+
+    this.props.history.push('/');
+  };
+
+  render() {
+    return (
+      <Nav>
+        <ul className="logo">
+          <li>
+            <Link to="/">cdv CMS</Link>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <Link to="/dashboard">Dashboard</Link>
+          </li>
+          <li>
+            <Link to="/dashboard/articles">Articles</Link>
+          </li>
+          <li>
+            <Link to="/users">Users</Link>
+          </li>
+        </ul>
+        <ul className="logout">
+          <li onClick={this.logoutUser}>Logout</li>
+        </ul>
+      </Nav>
+    );
+  }
 }

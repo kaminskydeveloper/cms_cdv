@@ -12,6 +12,8 @@ import article from './pages/article';
 import addArticle from './pages/dashboard/addArticle';
 import editPost from './pages/dashboard/editPost';
 
+import AuthenticatedRoute from './utils/AuthenticatedRoute';
+
 class App extends Component {
   render() {
     return (
@@ -21,7 +23,11 @@ class App extends Component {
           <Route exact path="/about" component={about}></Route>
           <Route exact path="/contact" component={contact}></Route>
           <Route exact path="/login" component={login}></Route>
-          <Route exact path="/dashboard" component={dashboard}></Route>
+          <AuthenticatedRoute
+            exact
+            path="/dashboard"
+            component={dashboard}
+          ></AuthenticatedRoute>
           <Route exact path="/dashboard/articles" component={articles}></Route>
           <Route exact path="/users" component={users}></Route>
           <Route exact path="/article/:id" component={article}></Route>
