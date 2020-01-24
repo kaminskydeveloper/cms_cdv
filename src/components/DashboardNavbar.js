@@ -44,8 +44,6 @@ const Nav = styled.nav`
 export default class DashboardNavbar extends Component {
   logoutUser = () => {
     localStorage.removeItem('FBIdToken');
-
-    this.props.history.push('/');
   };
 
   render() {
@@ -68,7 +66,9 @@ export default class DashboardNavbar extends Component {
           </li>
         </ul>
         <ul className="logout">
-          <li onClick={this.logoutUser}>Logout</li>
+          <li onClick={this.logoutUser}>
+            <Link to="/login">Logout</Link>
+          </li>
         </ul>
       </Nav>
     );

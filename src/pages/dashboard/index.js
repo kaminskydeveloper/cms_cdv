@@ -77,11 +77,21 @@ class dashboard extends Component {
   };
 
   componentDidMount = () => {
+    const config = {
+      headers: { Authorization: `${localStorage.getItem('FBIdToken')}` },
+    };
     axios
-      .get('https://europe-west1-cdv-cms.cloudfunctions.net/api/Drafts')
+      .get('https://europe-west1-cdv-cms.cloudfunctions.net/api/Drafts', config)
       .then(res => {
+        console.log(res);
         this.setState({ drafts: res.data, loading: false });
-      });
+      })
+      .catch(err => console.log(err));
+
+    axios
+      .get('https://europe-west1-cdv-cms.cloudfunctions.net/api/posts')
+      .then(res => console.log(res.data.length))
+      .catch(err => console.log(err));
   };
 
   handleChange = e => {

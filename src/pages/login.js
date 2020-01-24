@@ -48,6 +48,12 @@ class login extends Component {
     password: '',
   };
 
+  componentDidMount = () => {
+    if (localStorage.getItem('FBIdToken')) {
+      this.props.history.push('/dashboard');
+    }
+  };
+
   loginUser = e => {
     e.preventDefault();
 
