@@ -89,7 +89,6 @@ class articles extends Component {
       )
       .then(res => {
         this.setState({ posts: res.data, loading: false });
-        console.log(res.data);
       })
       .catch(err => console.log(err));
   };
@@ -114,12 +113,7 @@ class articles extends Component {
   };
 
   editSinglePost = postId => {
-    console.log(postId);
-    const refreshedPosts = this.state.posts.filter(
-      post => post.postId !== postId
-    );
-
-    console.log(refreshedPosts);
+    this.state.posts.filter(post => post.postId !== postId);
   };
 
   render() {
@@ -127,7 +121,11 @@ class articles extends Component {
       <SingleArticle key={post.postId}>
         <div>
           <h4>Title</h4>
-          <p>{post.title}</p>
+          <p>
+            <Link to={`/article/${post.postId}`} target="_blank">
+              {post.title}
+            </Link>
+          </p>
         </div>
         <div>
           <h4>Date</h4>

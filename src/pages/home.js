@@ -38,30 +38,27 @@ class home extends Component {
     fetch(`https://europe-west1-cdv-cms.cloudfunctions.net/api/posts`)
       .then(res => res.json())
       .then(json => {
-        this.setState({ posts: json, loading: false });
-        console.log(this.state.posts);
+        this.setState({ posts: json, fetchedPosts: json, loading: false });
       });
-  };
-
-  getOnlyIngridLunden = () => {
-    const filteredData = this.state.fetchedPosts.filter(
-      post => post.author === 'Ingrid Lunden'
-    );
-
-    this.setState({ posts: filteredData });
-  };
-
-  getOnlyRichardLawler = () => {
-    const filteredData = this.state.fetchedPosts.filter(
-      post => post.author === 'Richard Lawler'
-    );
-
-    this.setState({ posts: filteredData });
   };
 
   getAllPosts = () => {
     const allPosts = this.state.fetchedPosts;
-    this.setState({ posts: allPosts });
+    //this.setState({ posts: allPosts });
+    return allPosts;
+  };
+
+  filterByPostCategory = category => {
+    const allPosts = this.getAllPosts();
+
+    if (!category) {
+      this.setState({ posts: allPosts });
+    } else {
+      const filteredPostData = allPosts.filter(
+        post => post.category === category
+      );
+      this.setState({ posts: filteredPostData });
+    }
   };
 
   render() {
@@ -80,12 +77,22 @@ class home extends Component {
       <Layout>
         <ContentWrapper>
           <div className="buttonContainer">
-            <Button onClick={this.getOnlyIngridLunden}>PC</Button>
-            <Button onClick={this.getOnlyRichardLawler}>Mobile</Button>
-            <Button>Software</Button>
-            <Button>Gamming</Button>
-            <Button>Other</Button>
-            <Button onClick={this.getAllPosts}>All</Button>
+            <Button value="PC" onClick={() => this.filterByPostCategory('PC')}>
+              PC
+            </Button>
+            <Button onClick={() => this.filterByPostCategory('Mobile')}>
+              Mobile
+            </Button>
+            <Button onClick={() => this.filterByPostCategory('Software')}>
+              Software
+            </Button>
+            <Button onClick={() => this.filterByPostCategory('Gamming')}>
+              Gamming
+            </Button>
+            <Button onClick={() => this.filterByPostCategory('Other')}>
+              Other
+            </Button>
+            <Button onClick={() => this.filterByPostCategory()}>All</Button>
           </div>
           {this.state.loading ? (
             <h1>

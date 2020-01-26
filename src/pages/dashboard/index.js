@@ -86,49 +86,38 @@ class dashboard extends Component {
     };
 
     axios
-      .get(
-        'https://europe-west1-cdv-cms.cloudfunctions.net/api/getMyPosts',
-        config
+      .all([
+        axios.get(
+          'https://europe-west1-cdv-cms.cloudfunctions.net/api/getMyPosts',
+          config
+        ),
+        axios.get(
+          'https://europe-west1-cdv-cms.cloudfunctions.net/api/getUsers',
+          config
+        ),
+        axios.get(
+          'https://europe-west1-cdv-cms.cloudfunctions.net/api/user',
+          config
+        ),
+        axios.get(
+          'https://europe-west1-cdv-cms.cloudfunctions.net/api/getMyDrafts',
+          config
+        ),
+      ])
+      .then(
+        axios.spread(
+          (getMyPostsRes, getUsersRes, getUserRes, getMyDraftsRes) => {
+            this.setState({
+              posts: getMyPostsRes.data,
+              users: getUsersRes.data,
+              credentials: getUserRes.data.credentials,
+              loggedUser: getUserRes.data.credentials.username,
+              drafts: getMyDraftsRes.data,
+              loading: false,
+            });
+          }
+        )
       )
-      .then(res => this.setState({ posts: res.data }))
-      .catch(err => console.log(err));
-
-    axios
-      .get(
-        'https://europe-west1-cdv-cms.cloudfunctions.net/api/getUsers',
-        config
-      )
-      .then(res => this.setState({ users: res.data }))
-      .catch(err => console.log(err));
-
-    axios
-      .get('https://europe-west1-cdv-cms.cloudfunctions.net/api/user', config)
-      .then(res =>
-        this.setState({
-          credentials: res.data.credentials,
-          loggedUser: res.data.credentials.username,
-        })
-      )
-      .catch(err => console.log(err));
-    axios
-      .get(
-        'https://europe-west1-cdv-cms.cloudfunctions.net/api/getMyDrafts',
-        config
-      )
-      .then(res => {
-        console.log(res);
-        this.setState({
-          drafts: res.data,
-          loading: false,
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-
-    axios
-      .get('https://europe-west1-cdv-cms.cloudfunctions.net/api/posts')
-      .then(res => console.log(res.data.length))
       .catch(err => console.log(err));
   };
 
