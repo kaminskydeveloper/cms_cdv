@@ -77,7 +77,7 @@ export default class DashboardNavbar extends Component {
           </li>
           {this.state.loggedAsAdmin && (
             <li>
-              <Link to="/users">Users</Link>
+              <Link to="/dashboard/users">Users</Link>
             </li>
           )}
         </ul>

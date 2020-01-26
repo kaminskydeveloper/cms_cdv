@@ -7,9 +7,10 @@ import contact from './pages/contact';
 import login from './pages/login';
 import dashboard from './pages/dashboard';
 import articles from './pages/dashboard/articles';
-import users from './pages/users';
+import users from './pages/dashboard/users';
 import article from './pages/article';
 import addArticle from './pages/dashboard/addArticle';
+import addUser from './pages/dashboard/addUser';
 import editPost from './pages/dashboard/editPost';
 
 import AuthenticatedRoute from './utils/AuthenticatedRoute';
@@ -29,13 +30,14 @@ class App extends Component {
             component={dashboard}
           ></AuthenticatedRoute>
           <Route exact path="/dashboard/articles" component={articles}></Route>
-          <Route exact path="/users" component={users}></Route>
+          <Route exact path="/dashboard/users" component={users}></Route>
           <Route exact path="/article/:id" component={article}></Route>
           <Route
             exact
             path="/dashboard/addarticle"
             component={addArticle}
           ></Route>
+          <Route exact path="/dashboard/adduser" component={addUser}></Route>
           <Route
             exact
             path="/dashboard/editPost/:id"

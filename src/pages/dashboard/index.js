@@ -75,6 +75,7 @@ class dashboard extends Component {
     drafts: [],
     credentials: {},
     posts: [],
+    users: [],
     loggedUser: '',
     loading: true,
   };
@@ -90,6 +91,14 @@ class dashboard extends Component {
         config
       )
       .then(res => this.setState({ posts: res.data }))
+      .catch(err => console.log(err));
+
+    axios
+      .get(
+        'https://europe-west1-cdv-cms.cloudfunctions.net/api/getUsers',
+        config
+      )
+      .then(res => this.setState({ users: res.data }))
       .catch(err => console.log(err));
 
     axios
@@ -214,7 +223,9 @@ class dashboard extends Component {
             <div>
               <h3>Summary</h3>
               <p>Articles already created: {this.state.posts.length}</p>
-              {this.state.credentials.admin && <p>Users already created: 2</p>}
+              {this.state.credentials.admin && (
+                <p>Users already created: {this.state.users.length}</p>
+              )}
             </div>
             <div>
               <DraftForm onSubmit={this.handleSubmit}>
