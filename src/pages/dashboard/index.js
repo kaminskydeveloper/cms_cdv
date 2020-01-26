@@ -73,6 +73,9 @@ class dashboard extends Component {
     formDraftTitle: '',
     formDraftNote: '',
     drafts: [],
+    credentials: {},
+    posts: [],
+    loggedUser: '',
     loading: true,
   };
 
@@ -80,13 +83,39 @@ class dashboard extends Component {
     const config = {
       headers: { Authorization: `${localStorage.getItem('FBIdToken')}` },
     };
+
     axios
-      .get('https://europe-west1-cdv-cms.cloudfunctions.net/api/Drafts', config)
+      .get(
+        'https://europe-west1-cdv-cms.cloudfunctions.net/api/getMyPosts',
+        config
+      )
+      .then(res => this.setState({ posts: res.data }))
+      .catch(err => console.log(err));
+
+    axios
+      .get('https://europe-west1-cdv-cms.cloudfunctions.net/api/user', config)
+      .then(res =>
+        this.setState({
+          credentials: res.data.credentials,
+          loggedUser: res.data.credentials.username,
+        })
+      )
+      .catch(err => console.log(err));
+    axios
+      .get(
+        'https://europe-west1-cdv-cms.cloudfunctions.net/api/getMyDrafts',
+        config
+      )
       .then(res => {
         console.log(res);
-        this.setState({ drafts: res.data, loading: false });
+        this.setState({
+          drafts: res.data,
+          loading: false,
+        });
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+      });
 
     axios
       .get('https://europe-west1-cdv-cms.cloudfunctions.net/api/posts')
@@ -105,12 +134,21 @@ class dashboard extends Component {
   handleSubmit = e => {
     e.preventDefault();
     if (this.state.formDraftTitle && this.state.formDraftNote) {
+      let data = {
+        title: this.state.formDraftTitle,
+        body: this.state.formDraftNote,
+      };
       axios
-        .post('https://europe-west1-cdv-cms.cloudfunctions.net/api/postDraft', {
-          title: this.state.formDraftTitle,
-          body: this.state.formDraftNote,
-          userHandle: 'pies',
-        })
+        .post(
+          'https://europe-west1-cdv-cms.cloudfunctions.net/api/postDraft',
+          data,
+          {
+            headers: {
+              Authorization: `${localStorage.getItem('FBIdToken')}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        )
         .then(res => {
           this.setState({
             drafts: [
@@ -131,9 +169,13 @@ class dashboard extends Component {
   };
 
   deleteSingleDraft = draftId => {
+    const config = {
+      headers: { Authorization: `${localStorage.getItem('FBIdToken')}` },
+    };
     axios
       .delete(
-        `https://europe-west1-cdv-cms.cloudfunctions.net/api/deleteDraft/${draftId}`
+        `https://europe-west1-cdv-cms.cloudfunctions.net/api/deleteDraft/${draftId}`,
+        config
       )
       .then(res => {
         const refreshedDrafts = this.state.drafts.filter(
@@ -161,12 +203,18 @@ class dashboard extends Component {
           <div className="first-column">
             <div>
               <h2>Dashboard</h2>
-              <p>You are logged in as: User</p>
+              <p>
+                You are logged in as: <b>{this.state.loggedUser}</b>
+              </p>
+              <p>
+                Role:{' '}
+                <b>{this.state.credentials.admin ? 'Admin' : 'Redactor'}</b>
+              </p>
             </div>
             <div>
               <h3>Summary</h3>
-              <p>Articles already created: 6</p>
-              <p>Users already created: 2</p>
+              <p>Articles already created: {this.state.posts.length}</p>
+              {this.state.credentials.admin && <p>Users already created: 2</p>}
             </div>
             <div>
               <DraftForm onSubmit={this.handleSubmit}>

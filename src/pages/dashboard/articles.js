@@ -78,20 +78,31 @@ class articles extends Component {
 
   componentDidMount = () => {
     this.setState({ loading: true });
+    const config = {
+      headers: { Authorization: `${localStorage.getItem('FBIdToken')}` },
+    };
 
-    fetch(`https://europe-west1-cdv-cms.cloudfunctions.net/api/posts`)
-      .then(res => res.json())
-      .then(json => {
-        this.setState({ posts: json, loading: false });
-        console.log(this.state.posts);
-        console.log(this.state.posts[0].postId);
-      });
+    axios
+      .get(
+        'https://europe-west1-cdv-cms.cloudfunctions.net/api/getMyPosts',
+        config
+      )
+      .then(res => {
+        this.setState({ posts: res.data, loading: false });
+        console.log(res.data);
+      })
+      .catch(err => console.log(err));
   };
 
   deleteSinglePost = postId => {
+    const config = {
+      headers: { Authorization: `${localStorage.getItem('FBIdToken')}` },
+    };
+
     axios
       .delete(
-        `https://europe-west1-cdv-cms.cloudfunctions.net/api/post/${postId}`
+        `https://europe-west1-cdv-cms.cloudfunctions.net/api/post/${postId}`,
+        config
       )
       .then(res => {
         const refreshedPosts = this.state.posts.filter(
@@ -124,7 +135,7 @@ class articles extends Component {
         </div>
         <div>
           <h4>Author</h4>
-          <p>{post.userHandle}</p>
+          <p>{post.username}</p>
         </div>
         <div className="edit-container">
           <Link to={`/dashboard/editPost/${post.postId}`}>

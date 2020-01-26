@@ -55,7 +55,7 @@ class addArticle extends Component {
     title: '',
     content: '',
     imageUrl: '',
-    userHandle: '',
+    category: 'PC',
     addSuccess: false,
   };
 
@@ -67,23 +67,33 @@ class addArticle extends Component {
     });
   };
 
+  handleSelectChange = event => {
+    this.setState({ category: event.target.value });
+    console.log(this.state.category);
+  };
+
   handleSubmit = e => {
     e.preventDefault();
 
+    let articleData = {
+      title: this.state.title,
+      body: this.state.content,
+      category: this.state.category,
+      postImage: this.state.imageUrl,
+    };
     axios
-      .post('https://europe-west1-cdv-cms.cloudfunctions.net/api/post', {
-        title: this.state.title,
-        body: this.state.content,
-        userHandle: this.state.userHandle,
-        postImage: this.state.imageUrl,
-      })
+      .post(
+        'https://europe-west1-cdv-cms.cloudfunctions.net/api/post',
+        articleData,
+        { headers: { Authorization: `${localStorage.getItem('FBIdToken')}` } }
+      )
       .then(res => {
         console.log(res);
         this.setState({
           title: '',
           content: '',
           imageUrl: '',
-          userHandle: '',
+          category: 'PC',
           addSuccess: true,
         });
         setTimeout(() => {
@@ -134,13 +144,26 @@ class addArticle extends Component {
                 onChange={this.handleChange}
                 value={this.state.imageUrl}
               />
-              <input
-                type="text"
-                name="userHandle"
-                placeholder="user handle"
-                onChange={this.handleChange}
-                value={this.state.userHandle}
-              />
+              <select
+                value={this.state.category}
+                onChange={this.handleSelectChange}
+              >
+                <option value="PC" name="PC">
+                  PC
+                </option>
+                <option value="Mobile" name="Mobile">
+                  Mobile
+                </option>
+                <option value="Software" name="Software">
+                  Software
+                </option>
+                <option value="Gamming" name="Gamming">
+                  Gamming
+                </option>
+                <option value="Other" name="Other">
+                  Other
+                </option>
+              </select>
               {/* <input
                 type="file"
                 name="userImage"

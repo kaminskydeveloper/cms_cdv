@@ -69,7 +69,7 @@ class home extends Component {
       <PostCard
         key={post.postId}
         title={post.title}
-        author={post.userHandle}
+        author={post.username}
         description={post.body}
         imageUrl={post.postImage ? post.postImage : ''}
         postId={post.postId}

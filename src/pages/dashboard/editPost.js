@@ -55,13 +55,19 @@ class editPost extends Component {
     title: '',
     content: '',
     imageUrl: '',
-    userHandle: '',
+    category: 'PC',
     addSuccess: false,
   };
 
   componentDidMount = () => {
+    const config = {
+      headers: { Authorization: `${localStorage.getItem('FBIdToken')}` },
+    };
     axios
-      .get(`https://europe-west1-cdv-cms.cloudfunctions.net/api/posts`)
+      .get(
+        `https://europe-west1-cdv-cms.cloudfunctions.net/api/getMyPosts`,
+        config
+      )
       .then(res => {
         const data = res.data.filter(
           post => post.postId === this.props.match.params.id
@@ -71,7 +77,6 @@ class editPost extends Component {
           title: data[0].title,
           content: data[0].body,
           imageUrl: data[0].postImage,
-          userHandle: data[0].userHandle,
         });
       })
       .catch(err => console.log(err));
@@ -85,18 +90,29 @@ class editPost extends Component {
     });
   };
 
+  handleSelectChange = event => {
+    this.setState({ category: event.target.value });
+    console.log(this.state.category);
+  };
+
   handleSubmit = e => {
     e.preventDefault();
 
+    const config = {
+      headers: { Authorization: `${localStorage.getItem('FBIdToken')}` },
+    };
+
+    let editedPostData = {
+      title: this.state.title,
+      body: this.state.content,
+      postImage: this.state.imageUrl,
+      category: this.state.category,
+    };
     axios
       .put(
         `https://europe-west1-cdv-cms.cloudfunctions.net/api/post/${this.props.match.params.id}`,
-        {
-          title: this.state.title,
-          body: this.state.content,
-          userHandle: this.state.userHandle,
-          postImage: this.state.imageUrl,
-        }
+        editedPostData,
+        config
       )
       .then(res => {
         this.setState({ addSuccess: true });
@@ -148,13 +164,26 @@ class editPost extends Component {
                 onChange={this.handleChange}
                 value={this.state.imageUrl}
               />
-              <input
-                type="text"
-                name="userHandle"
-                placeholder="user handle"
-                onChange={this.handleChange}
-                value={this.state.userHandle}
-              />
+              <select
+                value={this.state.category}
+                onChange={this.handleSelectChange}
+              >
+                <option value="PC" name="PC">
+                  PC
+                </option>
+                <option value="Mobile" name="Mobile">
+                  Mobile
+                </option>
+                <option value="Software" name="Software">
+                  Software
+                </option>
+                <option value="Gamming" name="Gamming">
+                  Gamming
+                </option>
+                <option value="Other" name="Other">
+                  Other
+                </option>
+              </select>
               {/* <input
                 type="file"
                 name="userImage"

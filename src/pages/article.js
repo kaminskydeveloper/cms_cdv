@@ -3,6 +3,7 @@ import Layout from '../components/Layout';
 import styled from 'styled-components';
 import CalendarIcon from '../images/icons/calendar.svg';
 import AuthorIcon from '../images/icons/author.svg';
+import CategoryIcon from '../images/icons/category.svg';
 
 const ContentWrapper = styled.div`
   display: grid;
@@ -84,7 +85,15 @@ export default class Article extends Component {
                       alt="author icon"
                       className="info-icon"
                     />
-                    Author: {this.state.posts[0].userHandle}
+                    Author: {this.state.posts[0].username}
+                  </span>
+                  <span>
+                    <img
+                      src={CategoryIcon}
+                      alt="category icon"
+                      className="info-icon"
+                    />
+                    Author: {this.state.posts[0].category}
                   </span>
                 </div>
                 <img src={this.state.posts[0].postImage} alt="" />

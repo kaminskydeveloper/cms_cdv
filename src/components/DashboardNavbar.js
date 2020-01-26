@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import * as StyleConstants from '../styles/StyleConstants';
+import axios from 'axios';
 
 const Nav = styled.nav`
   background-color: ${StyleConstants.MAIN_COLOR};
@@ -42,6 +43,19 @@ const Nav = styled.nav`
 `;
 
 export default class DashboardNavbar extends Component {
+  state = { loggedAsAdmin: false };
+
+  componentDidMount = () => {
+    const config = {
+      headers: { Authorization: `${localStorage.getItem('FBIdToken')}` },
+    };
+
+    axios
+      .get('https://europe-west1-cdv-cms.cloudfunctions.net/api/user', config)
+      .then(res => this.setState({ loggedAsAdmin: res.data.credentials.admin }))
+      .catch(err => console.log(err));
+  };
+
   logoutUser = () => {
     localStorage.removeItem('FBIdToken');
   };
@@ -61,9 +75,11 @@ export default class DashboardNavbar extends Component {
           <li>
             <Link to="/dashboard/articles">Articles</Link>
           </li>
-          <li>
-            <Link to="/users">Users</Link>
-          </li>
+          {this.state.loggedAsAdmin && (
+            <li>
+              <Link to="/users">Users</Link>
+            </li>
+          )}
         </ul>
         <ul className="logout">
           <li onClick={this.logoutUser}>
