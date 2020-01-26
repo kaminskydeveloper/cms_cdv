@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../src/styles/global.sass';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import home from './pages/home';
 import about from './pages/about';
 import contact from './pages/contact';
