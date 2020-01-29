@@ -34,5 +34,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://europe-west1-cdv-cms.cloudfunctions.net/api"
+  "proxy": "http://192.168.43.90:5000/cdv-cms/europe-west1/api"
 }

@@ -77,6 +77,22 @@ class users extends Component {
       .catch(err => console.log(err));
   };
 
+  deleteSingleUser = username => {
+    const config = {
+      headers: { Authorization: `${localStorage.getItem('FBIdToken')}` },
+    };
+
+    axios
+      .delete(`/deleteUser/${username}`, config)
+      .then(res => {
+        const refreshedUsers = this.state.users.filter(
+          user => user.username !== username
+        );
+        this.setState({ users: refreshedUsers });
+      })
+      .catch(err => console.log(err));
+  };
+
   render() {
     let SingleUserContainer = this.state.users.map(user => (
       <SingleUser key={user.userId}>
@@ -89,7 +105,12 @@ class users extends Component {
           <p>{user.email}</p>
         </div>
         <div className="delete-container">
-          <button className="delete-button">DELETE</button>
+          <button
+            className="delete-button"
+            onClick={() => this.deleteSingleUser(user.username)}
+          >
+            DELETE
+          </button>
         </div>
       </SingleUser>
     ));
