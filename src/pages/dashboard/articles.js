@@ -83,10 +83,7 @@ class articles extends Component {
     };
 
     axios
-      .get(
-        'https://europe-west1-cdv-cms.cloudfunctions.net/api/getMyPosts',
-        config
-      )
+      .get('/getMyPosts', config)
       .then(res => {
         this.setState({ posts: res.data, loading: false });
       })
@@ -99,10 +96,7 @@ class articles extends Component {
     };
 
     axios
-      .delete(
-        `https://europe-west1-cdv-cms.cloudfunctions.net/api/post/${postId}`,
-        config
-      )
+      .delete(`/post/${postId}`, config)
       .then(res => {
         const refreshedPosts = this.state.posts.filter(
           post => post.postId !== postId

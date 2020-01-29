@@ -35,7 +35,7 @@ class home extends Component {
   componentDidMount = () => {
     this.setState({ loading: true });
 
-    fetch(`https://europe-west1-cdv-cms.cloudfunctions.net/api/posts`)
+    fetch(`/posts`)
       .then(res => res.json())
       .then(json => {
         this.setState({ posts: json, fetchedPosts: json, loading: false });
@@ -44,7 +44,6 @@ class home extends Component {
 
   getAllPosts = () => {
     const allPosts = this.state.fetchedPosts;
-    //this.setState({ posts: allPosts });
     return allPosts;
   };
 

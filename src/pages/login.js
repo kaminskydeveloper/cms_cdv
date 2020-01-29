@@ -58,7 +58,7 @@ class login extends Component {
     e.preventDefault();
 
     axios
-      .post('https://europe-west1-cdv-cms.cloudfunctions.net/api/login', {
+      .post('/login', {
         email: this.state.email,
         password: this.state.password,
       })

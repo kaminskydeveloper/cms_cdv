@@ -86,38 +86,17 @@ class dashboard extends Component {
     };
 
     axios
-      .all([
-        axios.get(
-          'https://europe-west1-cdv-cms.cloudfunctions.net/api/getMyPosts',
-          config
-        ),
-        axios.get(
-          'https://europe-west1-cdv-cms.cloudfunctions.net/api/getUsers',
-          config
-        ),
-        axios.get(
-          'https://europe-west1-cdv-cms.cloudfunctions.net/api/user',
-          config
-        ),
-        axios.get(
-          'https://europe-west1-cdv-cms.cloudfunctions.net/api/getMyDrafts',
-          config
-        ),
-      ])
-      .then(
-        axios.spread(
-          (getMyPostsRes, getUsersRes, getUserRes, getMyDraftsRes) => {
-            this.setState({
-              posts: getMyPostsRes.data,
-              users: getUsersRes.data,
-              credentials: getUserRes.data.credentials,
-              loggedUser: getUserRes.data.credentials.username,
-              drafts: getMyDraftsRes.data,
-              loading: false,
-            });
-          }
-        )
-      )
+      .get('/getDashboardData', config)
+      .then(res => {
+        this.setState({
+          posts: res.data.postsData,
+          users: res.data.users,
+          credentials: res.data.credentials,
+          loggedUser: res.data.credentials.username,
+          drafts: res.data.drafts,
+          loading: false,
+        });
+      })
       .catch(err => console.log(err));
   };
 
@@ -137,16 +116,12 @@ class dashboard extends Component {
         body: this.state.formDraftNote,
       };
       axios
-        .post(
-          'https://europe-west1-cdv-cms.cloudfunctions.net/api/postDraft',
-          data,
-          {
-            headers: {
-              Authorization: `${localStorage.getItem('FBIdToken')}`,
-              'Content-Type': 'application/json',
-            },
-          }
-        )
+        .post('/postDraft', data, {
+          headers: {
+            Authorization: `${localStorage.getItem('FBIdToken')}`,
+            'Content-Type': 'application/json',
+          },
+        })
         .then(res => {
           this.setState({
             drafts: [
@@ -171,10 +146,7 @@ class dashboard extends Component {
       headers: { Authorization: `${localStorage.getItem('FBIdToken')}` },
     };
     axios
-      .delete(
-        `https://europe-west1-cdv-cms.cloudfunctions.net/api/deleteDraft/${draftId}`,
-        config
-      )
+      .delete(`/deleteDraft/${draftId}`, config)
       .then(res => {
         const refreshedDrafts = this.state.drafts.filter(
           draft => draft.draftId !== draftId

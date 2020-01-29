@@ -82,11 +82,9 @@ class addArticle extends Component {
       postImage: this.state.imageUrl,
     };
     axios
-      .post(
-        'https://europe-west1-cdv-cms.cloudfunctions.net/api/post',
-        articleData,
-        { headers: { Authorization: `${localStorage.getItem('FBIdToken')}` } }
-      )
+      .post('/post', articleData, {
+        headers: { Authorization: `${localStorage.getItem('FBIdToken')}` },
+      })
       .then(res => {
         console.log(res);
         this.setState({

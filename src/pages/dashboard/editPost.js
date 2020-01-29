@@ -64,10 +64,7 @@ class editPost extends Component {
       headers: { Authorization: `${localStorage.getItem('FBIdToken')}` },
     };
     axios
-      .get(
-        `https://europe-west1-cdv-cms.cloudfunctions.net/api/getMyPosts`,
-        config
-      )
+      .get(`/getMyPosts`, config)
       .then(res => {
         const data = res.data.filter(
           post => post.postId === this.props.match.params.id
@@ -109,11 +106,7 @@ class editPost extends Component {
       category: this.state.category,
     };
     axios
-      .put(
-        `https://europe-west1-cdv-cms.cloudfunctions.net/api/post/${this.props.match.params.id}`,
-        editedPostData,
-        config
-      )
+      .put(`/post/${this.props.match.params.id}`, editedPostData, config)
       .then(res => {
         this.setState({ addSuccess: true });
         setTimeout(() => {

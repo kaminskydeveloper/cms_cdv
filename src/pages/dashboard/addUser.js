@@ -78,11 +78,9 @@ class addUser extends Component {
       admin: this.state.admin,
     };
     axios
-      .post(
-        'https://europe-west1-cdv-cms.cloudfunctions.net/api/addUser',
-        newUserData,
-        { headers: { Authorization: `${localStorage.getItem('FBIdToken')}` } }
-      )
+      .post('/addUser', newUserData, {
+        headers: { Authorization: `${localStorage.getItem('FBIdToken')}` },
+      })
       .then(res => {
         console.log(res);
         this.setState({

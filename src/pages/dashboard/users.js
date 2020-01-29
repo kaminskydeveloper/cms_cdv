@@ -70,7 +70,7 @@ class users extends Component {
 
   componentDidMount = () => {
     axios
-      .get('https://europe-west1-cdv-cms.cloudfunctions.net/api/getUsers', {
+      .get('/getUsers', {
         headers: { Authorization: `${localStorage.getItem('FBIdToken')}` },
       })
       .then(res => this.setState({ users: res.data, loading: false }))

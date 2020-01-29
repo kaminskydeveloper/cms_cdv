@@ -53,7 +53,7 @@ export default class Article extends Component {
   componentDidMount = () => {
     this.setState({ loading: true });
 
-    fetch(`https://europe-west1-cdv-cms.cloudfunctions.net/api/posts`)
+    fetch(`/posts`)
       .then(res => res.json())
       .then(json => {
         const data = json.filter(
